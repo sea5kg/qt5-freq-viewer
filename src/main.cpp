@@ -1,11 +1,14 @@
-#include "qt5freqviewer.h"
+#include <QGuiApplication>
+#include <QQuickView>
+#include <QtQml>
+#include <QUrl>
 
-#include <QApplication>
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    Qt5FreqViewer w;
-    w.show();
-    return a.exec();
+    QQuickView view;
+    view.setSource(QUrl("qrc:/res/qt5freqviewer.qml")); // Assuming main.qml is in your Qt Resources
+    view.show();
+
+    return app.exec();
 }

@@ -16,6 +16,6 @@ public:
     ~Qt5FreqViewer();
 
 private:
-    Ui::Qt5FreqViewer *ui;
+    // Ui::Qt5FreqViewer *ui;
 };
 #endif // QT5FREQVIEWER_H
