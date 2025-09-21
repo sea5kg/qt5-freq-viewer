@@ -1,5 +1,7 @@
 build-*-Debug
 *.user
+/tmp
+/qt5-freq-viewer
 
 # Prerequisites
 *.d
