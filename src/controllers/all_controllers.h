@@ -24,20 +24,35 @@ SOFTWARE.
 
 #pragma once
 
-#include <QMainWindow>
+#include <map>
+#include <iostream>
+#include <QObject>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class Qt5FreqViewer; }
-QT_END_NAMESPACE
+extern std::map<std::string, QObject *> *g_pControllers;
 
-class Qt5FreqViewer : public QMainWindow
-{
-    Q_OBJECT
-
+class Controllers {
 public:
-    Qt5FreqViewer(QWidget *parent = nullptr);
-    ~Qt5FreqViewer();
-
-private:
-    // Ui::Qt5FreqViewer *ui;
+  static void initGlobalVariables();
+  // static void deinitGlobalVariables();
+  static void addController(const std::string &sName, QObject *pController);
 };
+
+template <typename T>
+class RegistrarController {
+private:
+    T *controller;
+public:
+  RegistrarController(const std::string &sName) {
+      controller = new T();
+      Controllers::addController(sName, controller);
+  };
+  ~RegistrarController() {
+      delete controller;
+  }
+};
+
+#define QUOTE(x) #x
+
+// REGISTRY_SINGLE_CONTROLLER
+#define REGISTRY_SINGLE_CONTROLLER(classname) \
+    static RegistrarController<classname> g_pController##classname(QUOTE(classname));

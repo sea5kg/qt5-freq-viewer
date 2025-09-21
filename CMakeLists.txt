@@ -15,35 +15,39 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt5 COMPONENTS Widgets Qml Quick QuickControls2  REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Qml Quick QuickControls2  REQUIRED)
+find_package(QT NAMES Qt5 COMPONENTS Widgets Qml Gui Quick QuickControls2  REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Qml Gui Quick QuickControls2  REQUIRED)
 
 set(PROJECT_SOURCES
         "./src/main.cpp"
+        "./src/mytextcontroller.cpp"
+        "./src/controllers/all_controllers.cpp"
+        "./src/controllers/menucontroller.cpp"
         "./src/qt5freqviewer.cpp"
-        "./src/qt5freqviewer.h"
         "./qt5-freq-viewer.qrc"
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(qt5-freq-viewer
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-else()
+# if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+#     qt_add_executable(qt5-freq-viewer
+#         MANUAL_FINALIZATION
+#         ${PROJECT_SOURCES}
+#     )
+# else()
     add_executable(qt5-freq-viewer
         ${PROJECT_SOURCES}
     )
-endif()
+# endif()
 
 include_directories(
     "./src"
+    "./src/controllers"
 )
 
 target_link_libraries(
     qt5-freq-viewer
     PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Qml
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::QuickControls2

@@ -3,6 +3,7 @@ build-*-Debug
 /tmp
 /qt5-freq-viewer
 /docs
+.vscode
 
 # Prerequisites
 *.d

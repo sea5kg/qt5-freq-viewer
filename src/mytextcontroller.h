@@ -24,20 +24,23 @@ SOFTWARE.
 
 #pragma once
 
-#include <QMainWindow>
+#include <QObject>
+#include <QString>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class Qt5FreqViewer; }
-QT_END_NAMESPACE
-
-class Qt5FreqViewer : public QMainWindow
+class MyTextController : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString myText READ myText WRITE setMyText NOTIFY myTextChanged)
 
 public:
-    Qt5FreqViewer(QWidget *parent = nullptr);
-    ~Qt5FreqViewer();
+    explicit MyTextController(QObject *parent = nullptr);
+
+    QString myText() const;
+    void setMyText(const QString &newText);
+
+signals:
+    void myTextChanged();
 
 private:
-    // Ui::Qt5FreqViewer *ui;
+    QString m_myText;
 };

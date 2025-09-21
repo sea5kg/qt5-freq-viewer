@@ -22,39 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <QGuiApplication>
-#include <QApplication>
-#include <QQuickView>
-#include <QtQml>
-#include <QUrl>
-#include <iostream>
+#include "menucontroller.h"
 
-#include "mytextcontroller.h"
+#include <QApplication>
+#include <QFileDialog>
+#include <iostream>
 #include "all_controllers.h"
 
-int main(int argc, char *argv[]) {
-  // QApplication app(argc, argv);
-  QApplication app(argc, argv);
 
-  QQmlApplicationEngine engine;
+REGISTRY_SINGLE_CONTROLLER(MenuController)
 
-  MyTextController myTextController;
-  engine.rootContext()->setContextProperty("myTextController", &myTextController);
+MenuController::MenuController(QObject *parent)
+    : QObject(parent) {
 
-  // Expose to QML
-  for (const auto& pair : *g_pControllers) { // 'pair' will be a const reference to std::pair<const std::string, int>
-    engine.rootContext()->setContextProperty(QString::fromStdString(pair.first), pair.second);
-  }
+}
 
-  // view.setSource(QUrl::fromLocalFile("qml/main.qml"));
-  const QUrl url(QStringLiteral("qml/main.qml")); // Assuming main.qml is in a Qt resource file
+void MenuController::performActionOpen() {
+    std::cout << "Action performed from C++: performActionOpen" << std::endl;
+    QString file1Name = QFileDialog::getOpenFileName(nullptr,
+        tr("Open File With Frequirencies"), ".", tr("All Files (*.*)"));
+    std::cout << "Selected file: " << file1Name.toStdString() << std::endl;
+}
 
-  QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                   &app, [url](QObject *obj, const QUrl &objUrl) {
-      if (!obj && url == objUrl)
-          QCoreApplication::exit(-1);
-  }, Qt::QueuedConnection);
-  engine.load(url);
-
-  return app.exec();
+void MenuController::performActionClose() {
+    QCoreApplication::exit(-1);
 }

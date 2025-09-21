@@ -24,20 +24,15 @@ SOFTWARE.
 
 #pragma once
 
-#include <QMainWindow>
+#include <QObject>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class Qt5FreqViewer; }
-QT_END_NAMESPACE
-
-class Qt5FreqViewer : public QMainWindow
+class MenuController : public QObject
 {
     Q_OBJECT
-
 public:
-    Qt5FreqViewer(QWidget *parent = nullptr);
-    ~Qt5FreqViewer();
+    explicit MenuController(QObject *parent = nullptr);
 
-private:
-    // Ui::Qt5FreqViewer *ui;
+    Q_INVOKABLE void performActionOpen();
+    Q_INVOKABLE void performActionClose();
 };
+
