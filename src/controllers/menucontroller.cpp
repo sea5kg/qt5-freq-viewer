@@ -40,10 +40,9 @@ MenuController::MenuController(QObject *parent)
 }
 
 void MenuController::performActionOpen() {
-  std::cout << "Action performed from C++: performActionOpen" << std::endl;
   QString filePath = QFileDialog::getOpenFileName(nullptr,
     tr("Open File With Frequirencies"), ".", tr("All Files (*.*)"));
-  std::cout << "Selected file: " << filePath.toStdString() << std::endl;
+  // std::cout << "Selected file: " << filePath.toStdString() << std::endl;
 
   DataReader reader;
   if (!reader.tryRead(filePath)) {

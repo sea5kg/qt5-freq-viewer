@@ -87,6 +87,13 @@ ApplicationWindow {
 
             var x_vals = CanvasController.getValuesX(canva1.width, canva1.height);
             var y_vals = CanvasController.getValuesY(canva1.width, canva1.height);
+            if (x_vals.length == 0) {
+                x_vals = [0];
+            }
+            if (y_vals.length == 0) {
+                y_vals = [0];
+            }
+
             console.log(x_vals, y_vals);
 
             var y_min = y_vals[0];

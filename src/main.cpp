@@ -43,7 +43,7 @@ void InstallDefaultFont()
   if (fontId != -1) {
     QStringList fontList = QFontDatabase::applicationFontFamilies(fontId);
     QString family = fontList.first();
-    std::cout << "Applied custom font: " << family.toStdString() << std::endl;
+    // std::cout << "Applied custom font: " << family.toStdString() << std::endl;
     QFont font(family, 18);
     QGuiApplication::setFont(font);
   }
@@ -82,8 +82,10 @@ int main(int argc, char *argv[]) {
     canvas->applyFromReader(reader);
   }
 
-  // view.setSource(QUrl::fromLocalFile("qml/main.qml"));
-  const QUrl url(QStringLiteral("qml/main.qml")); // Assuming main.qml is in a Qt resource file
+  // const QUrl url = QUrl::fromLocalFile("qml/main.qml");
+  const QUrl url("qrc:/qml/main.qml");
+
+  // const QUrl url(QStringLiteral("./qml/main.qml")); // Assuming main.qml is in a Qt resource file
 
   QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                    &app, [url](QObject *obj, const QUrl &objUrl) {

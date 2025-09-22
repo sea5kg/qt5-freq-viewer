@@ -43,14 +43,14 @@ void CanvasController::applyFromReader(const DataReader &reader) {
 
     // TODO: use a move semantic or shared ptr
     m_vFreq = reader.getFreq();
-    m_vlFreq.empty();
+    m_vlFreq.clear();
     for (int i = 0; i < m_vFreq.size(); i++) {
         m_vlFreq.append(m_vFreq[i]);
     }
 
     m_vS11 = reader.getS11();
     m_vLogMag.clear();
-    m_vlLogMag.empty();
+    m_vlLogMag.clear();
     for (int  i = 0; i < m_vS11.size(); i++) {
         double real = m_vS11[i].first;
         double imag = m_vS11[i].second;
