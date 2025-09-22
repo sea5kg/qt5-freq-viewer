@@ -31,7 +31,6 @@ SOFTWARE.
 #include <QUrl>
 #include <iostream>
 
-#include "mytextcontroller.h"
 #include "all_controllers.h"
 #include "canvascontroller.h"
 #include "datareader.h"
@@ -48,8 +47,6 @@ void InstallDefaultFont()
     QGuiApplication::setFont(font);
   }
 }
-
-
 
 int main(int argc, char *argv[]) {
   // QGuiApplication app(argc, argv);
