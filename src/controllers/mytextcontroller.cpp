@@ -22,42 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <QGuiApplication>
-#include <QApplication>
-#include <QQuickView>
-#include <QtQml>
-#include <QUrl>
-#include <iostream>
-
 #include "mytextcontroller.h"
+
 #include "all_controllers.h"
 
-int main(int argc, char *argv[]) {
-  // QApplication app(argc, argv);
-  QApplication app(argc, argv);
+REGISTRY_SINGLE_CONTROLLER(MyTextController)
 
+MyTextController::MyTextController(QObject *parent)
+    : QObject(parent), m_myText("Initial Text")
+{
+}
 
-  // findController()
+QString MyTextController::myText() const
+{
+    return m_myText;
+}
 
-  QQmlApplicationEngine engine;
-
-  MyTextController myTextController;
-  engine.rootContext()->setContextProperty("myTextController", &myTextController);
-
-  // Expose to QML
-  for (const auto& pair : *g_pControllers) { // 'pair' will be a const reference to std::pair<const std::string, int>
-    engine.rootContext()->setContextProperty(QString::fromStdString(pair.first), pair.second);
-  }
-
-  // view.setSource(QUrl::fromLocalFile("qml/main.qml"));
-  const QUrl url(QStringLiteral("qml/main.qml")); // Assuming main.qml is in a Qt resource file
-
-  QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                   &app, [url](QObject *obj, const QUrl &objUrl) {
-      if (!obj && url == objUrl)
-          QCoreApplication::exit(-1);
-  }, Qt::QueuedConnection);
-  engine.load(url);
-
-  return app.exec();
+void MyTextController::setMyText(const QString &newText)
+{
+    if (m_myText == newText)
+        return;
+    m_myText = newText;
+    emit myTextChanged();
 }

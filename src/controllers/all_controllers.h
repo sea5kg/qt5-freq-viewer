@@ -28,6 +28,8 @@ SOFTWARE.
 #include <iostream>
 #include <QObject>
 
+#define CLASSNAME_QUOTE(x) #x
+
 extern std::map<std::string, QObject *> *g_pControllers;
 
 class Controllers {
@@ -36,6 +38,30 @@ public:
   // static void deinitGlobalVariables();
   static void addController(const std::string &sName, QObject *pController);
 };
+
+// findController
+
+template <class T> T *findController() {
+  Controllers::initGlobalVariables();
+  std::string sNameController = CLASSNAME_QUOTE(T);
+  // T::name();
+  QObject *pController = nullptr;
+  if (g_pControllers->count(sNameController)) {
+    pController = g_pControllers->at(sNameController);
+  }
+  if (!pController) {
+    std::cerr << "Not found controller: " << sNameController << std::endl;
+    return nullptr;
+  }
+  T *pTController = dynamic_cast<T *>(pController);
+  if (!pTController) {
+    std::cerr << "Controller could not cast to T [" << sNameController << "]" << std::endl;
+    return nullptr;
+  }
+  return pTController;
+};
+
+// registrar
 
 template <typename T>
 class RegistrarController {
@@ -51,8 +77,6 @@ public:
   }
 };
 
-#define QUOTE(x) #x
-
 // REGISTRY_SINGLE_CONTROLLER
 #define REGISTRY_SINGLE_CONTROLLER(classname) \
-    static RegistrarController<classname> g_pController##classname(QUOTE(classname));
+    static RegistrarController<classname> g_pController##classname(CLASSNAME_QUOTE(classname));

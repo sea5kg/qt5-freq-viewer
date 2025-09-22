@@ -20,9 +20,10 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Qml Gui Quick QuickControl
 
 set(PROJECT_SOURCES
         "./src/main.cpp"
-        "./src/mytextcontroller.cpp"
         "./src/controllers/all_controllers.cpp"
+        "./src/controllers/canvascontroller.cpp"
         "./src/controllers/menucontroller.cpp"
+        "./src/controllers/mytextcontroller.cpp"
         "./qt5-freq-viewer.qrc"
 )
 

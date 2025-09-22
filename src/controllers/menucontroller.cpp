@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include <QApplication>
 #include <QFileDialog>
+#include <QTextStream>
 #include <iostream>
 #include "all_controllers.h"
 
@@ -39,9 +40,41 @@ MenuController::MenuController(QObject *parent)
 
 void MenuController::performActionOpen() {
     std::cout << "Action performed from C++: performActionOpen" << std::endl;
-    QString file1Name = QFileDialog::getOpenFileName(nullptr,
+    QString filePath = QFileDialog::getOpenFileName(nullptr,
         tr("Open File With Frequirencies"), ".", tr("All Files (*.*)"));
-    std::cout << "Selected file: " << file1Name.toStdString() << std::endl;
+    std::cout << "Selected file: " << filePath.toStdString() << std::endl;
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        std::cout << "Error opening file:" << file.errorString().toStdString() << std::endl;
+        return;
+    }
+
+    QTextStream in(&file);
+    QString line;
+
+    while (!in.atEnd()) {
+        line = in.readLine(); // Read one line at a time
+        line = line.trimmed();
+        if (line == "") {
+            continue;
+        }
+        if (line.startsWith("#")) {
+            std::cout << "title: " << line.toStdString() << std::endl;
+        }
+        else if (line.startsWith("!")) {
+            std::cout << "title2: " << line.toStdString() << std::endl;
+        } else {
+            QString str = "3.00000000000E+05";
+            double value = str.toDouble();
+
+            std::cout << value << "    " << line.toStdString() << std::endl;
+        }
+        // qDebug() << line;     // Process or display the line
+    }
+
+    file.close(); // Close the file when done
+
 }
 
 void MenuController::performActionClose() {

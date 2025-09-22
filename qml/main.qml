@@ -52,7 +52,7 @@ ApplicationWindow {
 
     Text {
         id: helloText
-        text: myTextController.myText // Bind to the C++ property
+        text: MyTextController.myText // Bind to the C++ property
         y: 30
         // anchors.horizontalCenter: page.horizontalCenter
         font.pointSize: 12

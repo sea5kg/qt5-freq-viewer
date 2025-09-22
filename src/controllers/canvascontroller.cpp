@@ -22,23 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-// mytextcontroller.cpp
-#include "mytextcontroller.h"
+#include "canvascontroller.h"
 
-MyTextController::MyTextController(QObject *parent)
-    : QObject(parent), m_myText("Initial Text")
-{
+#include <QApplication>
+#include <QFileDialog>
+#include <iostream>
+#include "all_controllers.h"
+
+REGISTRY_SINGLE_CONTROLLER(CanvasController)
+
+CanvasController::CanvasController(QObject *parent)
+    : QObject(parent) {
 }
 
-QString MyTextController::myText() const
-{
-    return m_myText;
-}
-
-void MyTextController::setMyText(const QString &newText)
-{
-    if (m_myText == newText)
-        return;
-    m_myText = newText;
-    emit myTextChanged();
+void CanvasController::onPaint() {
+    std::cout << "CanvasController::onPaint()" << std::endl;
+    // TODO
 }
