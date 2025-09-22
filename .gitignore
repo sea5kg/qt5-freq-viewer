@@ -4,6 +4,12 @@ build-*-Debug
 /qt5-freq-viewer
 /docs
 .vscode
+/linuxdeployqt
+/qml
+/lib
+/doc
+/AppRun
+/Qt5FreqViewer
 
 # Prerequisites
 *.d
