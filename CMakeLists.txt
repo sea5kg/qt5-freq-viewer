@@ -23,7 +23,6 @@ set(PROJECT_SOURCES
         "./src/mytextcontroller.cpp"
         "./src/controllers/all_controllers.cpp"
         "./src/controllers/menucontroller.cpp"
-        "./src/qt5freqviewer.cpp"
         "./qt5-freq-viewer.qrc"
 )
 
