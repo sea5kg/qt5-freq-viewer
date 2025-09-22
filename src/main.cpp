@@ -38,7 +38,7 @@ SOFTWARE.
 
 void InstallDefaultFont()
 {
-  QString resourcePath = ":/src/fonts/CruNattapong-XyOd.ttf";
+  QString resourcePath = ":/fonts/CruNattapong-XyOd.ttf";
   qint32 fontId = QFontDatabase::addApplicationFont(resourcePath);
   if (fontId != -1) {
     QStringList fontList = QFontDatabase::applicationFontFamilies(fontId);
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
   }
 
   // const QUrl url = QUrl::fromLocalFile(QStringLiteral("./src/qml/main.qml"));
-  const QUrl url(QStringLiteral("qrc:/src/qml/main.qml"));
+  const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
 
   QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                    &app, [url](QObject *obj, const QUrl &objUrl) {

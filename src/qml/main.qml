@@ -10,7 +10,7 @@ ApplicationWindow {
 
     // FontLoader {
     //     id: customFont
-    //     source: "qrc:/src/fonts/CruNattapong-XyOd.ttf"
+    //     source: "qrc:/fonts/CruNattapong-XyOd.ttf"
     // }
 
     // color: "lightgray"

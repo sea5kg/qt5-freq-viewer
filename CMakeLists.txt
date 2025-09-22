@@ -25,7 +25,7 @@ set(PROJECT_SOURCES
         "./src/controllers/canvascontroller.cpp"
         "./src/controllers/menucontroller.cpp"
         "./src/controllers/mytextcontroller.cpp"
-        "./qt5-freq-viewer.qrc"
+        "./src/qt5-freq-viewer.qrc"
 )
 
 # if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

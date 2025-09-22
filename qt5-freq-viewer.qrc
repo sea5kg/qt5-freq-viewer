@@ -1,8 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource>
-    <file>src/qml/main.qml</file>
-    <file>src/fonts/CruNattapong-XyOd.ttf</file>
-    <file>src/fonts/CruNattapong-XyOd-info.txt</file>
-    <file>LICENSE</file>
-</qresource>
-</RCC>
