@@ -47,7 +47,7 @@ ApplicationWindow {
         }
 
         onPaint: {
-            console.log("onPaint");
+            // console.log("onPaint");
             const ctx = getContext("2d");
 
             // clear canvas
@@ -57,7 +57,7 @@ ApplicationWindow {
             ctx.fillStyle = "#C7B7B7";
             ctx.fillRect(10, 10, canva1.width - 20, canva1.height - 20);
 
-            var paddingLeft = 80;
+            var paddingLeft = 100;
             var paddingRight = 30;
             var paddingTop = 50;
             var paddingBottom = 40;
@@ -74,7 +74,7 @@ ApplicationWindow {
 
             // ctx.font = "bold 24px \"" + customFont + "\""
             ctx.font = "bold 24px \"AAA-Watin New\""
-            console.log(ctx.font)
+            // console.log(ctx.font)
             ctx.font.pointSize = 24
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
@@ -90,7 +90,7 @@ ApplicationWindow {
                 y_vals = [0];
             }
 
-            console.log(x_vals, y_vals);
+            // console.log(x_vals, y_vals);
 
             var y_min = y_vals[0];
             var y_max = y_vals[0];
@@ -118,9 +118,9 @@ ApplicationWindow {
             ctx.fillText("" + x_min + " Hz", paddingLeft, canva1.height - paddingBottom + 20);
             ctx.textAlign = "right";
             ctx.fillText("" + x_max + " Hz", canva1.width - paddingRight, canva1.height - paddingBottom + 20);
-            ctx.textAlign = "left";
-            ctx.fillText("" + y_max.toFixed(5), paddingLeft - 65, paddingTop + 12);
-            ctx.fillText("" + y_min.toFixed(5), paddingLeft - 65, canva1.height - paddingBottom - 5);
+            ctx.textAlign = "right";
+            ctx.fillText("" + y_max.toFixed(5), paddingLeft - 5, paddingTop + 12);
+            ctx.fillText("" + y_min.toFixed(5), paddingLeft - 5, canva1.height - paddingBottom - 5);
 
             var x_k = width_dia / x_length;
             var y_k = height_dia / y_length;
@@ -130,7 +130,7 @@ ApplicationWindow {
             for (var i = 0; i < x_vals.length; i++) {
                 var f_x = paddingLeft + (x_k * (x_vals[i] - x_min));
                 var f_y = h - (y_k * (y_vals[i] - y_min));
-                console.log("x,y = ", f_x, f_y)
+                // console.log("x,y = ", f_x, f_y)
                 if (i == 0) {
                     ctx.moveTo(f_x, f_y);
                 } else {
