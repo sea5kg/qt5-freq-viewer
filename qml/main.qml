@@ -24,6 +24,32 @@ ApplicationWindow {
         }
     }
 
+    Canvas {
+        id: canva1
+        anchors.fill: parent
+        onPaint: {
+            console.log("onPaint");
+            {
+                const ctx = getContext("2d");
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canva1.width, canva1.height);
+
+                ctx.fillStyle = "#C7B7B7";
+                ctx.fillRect(10, 10, canva1.width - 20, canva1.height - 20);
+            }
+
+            {
+                const ctx = getContext("2d");
+                ctx.beginPath()
+                ctx.moveTo(30, 20);
+                ctx.lineTo(30, canva1.height - 20);
+                ctx.lineTo(canva1.width - 30, canva1.height - 20);
+                console.log("onPaint", canva1.width - 20);
+                ctx.stroke();
+            }
+        }
+    }
+
     Text {
         id: helloText
         text: myTextController.myText // Bind to the C++ property
