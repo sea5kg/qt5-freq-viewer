@@ -3,8 +3,13 @@ import QtQuick.Controls 2.15
 
 ApplicationWindow {
     id: window1
-    width: 512
-    height: 512
+    width: 720
+    height: 640
+    minimumWidth: 300
+    minimumHeight: 300
+    // maximumWidth: 1200
+    // maximumHeight: 900
+
     visible: true
     title: qsTr("Qt5 Freq Viewer")
 
