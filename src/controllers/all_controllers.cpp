@@ -26,41 +26,17 @@ SOFTWARE.
 #include <iostream>
 
 std::map<std::string, QObject *> *g_pControllers = nullptr;
+std::map<std::string, std::string> *g_pMangledNames = nullptr;
 
 void Controllers::initGlobalVariables() {
   if (g_pControllers == nullptr) {
     // WsjcppLog::info(std::string(), "Create employees map");
     g_pControllers = new std::map<std::string, QObject *>();
   }
+  if (g_pMangledNames == nullptr) {
+    g_pMangledNames = new std::map<std::string, std::string>();
+  }
 }
-
-// void Controllers::deinitGlobalVariables() {
-//   const std::string TAG = "WsjcppEmployees::deinit";
-//   if (g_pWsjcppEmployees != nullptr) {
-//     std::map<std::string, WsjcppEmployBase *>::iterator it;
-//     for (it = g_pWsjcppEmployees->begin(); it != g_pWsjcppEmployees->end(); ++it) {
-//       std::string sEmployName = it->first;
-//       WsjcppLog::ok(TAG, sEmployName + " ... UNREGISTERED");
-//       delete it->second;
-//       it->second = nullptr;
-//     }
-//     g_pWsjcppEmployees->clear();
-//     delete g_pWsjcppEmployees;
-//     g_pWsjcppEmployees = nullptr;
-//   }
-
-//   if (g_pWsjcppInitEmployees != nullptr) {
-//     g_pWsjcppInitEmployees->clear();
-//     delete g_pWsjcppInitEmployees;
-//     g_pWsjcppInitEmployees = nullptr;
-//   }
-
-//   if (g_pWsjcppInitWith != nullptr) {
-//     g_pWsjcppInitWith->clear();
-//     delete g_pWsjcppInitWith;
-//     g_pWsjcppInitWith = nullptr;
-//   }
-// }
 
 void Controllers::addController(const std::string &sName, QObject *pEmploy) {
   Controllers::initGlobalVariables();
@@ -68,4 +44,9 @@ void Controllers::addController(const std::string &sName, QObject *pEmploy) {
       std::cout << "Added controller " << sName << std::endl;
       g_pControllers->insert(std::pair<std::string, QObject *>(sName, pEmploy));
   }
+}
+
+void Controllers::addMangledName(const std::string &sMangledName, const std::string &sControllerName) {
+  Controllers::initGlobalVariables();
+  g_pMangledNames->insert(std::pair<std::string, std::string>(sMangledName, sControllerName));
 }

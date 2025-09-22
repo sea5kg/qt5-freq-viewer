@@ -31,19 +31,23 @@ SOFTWARE.
 #define CLASSNAME_QUOTE(x) #x
 
 extern std::map<std::string, QObject *> *g_pControllers;
+extern std::map<std::string, std::string> *g_pMangledNames;
 
 class Controllers {
 public:
   static void initGlobalVariables();
   // static void deinitGlobalVariables();
   static void addController(const std::string &sName, QObject *pController);
+  static void addMangledName(const std::string &sMangledName, const std::string &sControllerName);
 };
 
 // findController
 
 template <class T> T *findController() {
   Controllers::initGlobalVariables();
-  std::string sNameController = CLASSNAME_QUOTE(T);
+  std::string sMangledName = typeid(T).name();
+  std::string sNameController = g_pMangledNames->at(sMangledName);
+
   // T::name();
   QObject *pController = nullptr;
   if (g_pControllers->count(sNameController)) {
@@ -69,11 +73,14 @@ private:
     T *controller;
 public:
   RegistrarController(const std::string &sName) {
-      controller = new T();
-      Controllers::addController(sName, controller);
+    // m_sName = sName;
+    controller = new T();
+    Controllers::addController(sName, controller);
+    std::string sMangledName = typeid(T).name();
+    Controllers::addMangledName(sMangledName, sName);
   };
   ~RegistrarController() {
-      delete controller;
+    delete controller;
   }
 };
 

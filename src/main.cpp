@@ -32,6 +32,7 @@ SOFTWARE.
 
 #include "mytextcontroller.h"
 #include "all_controllers.h"
+#include "canvascontroller.h"
 #include "datareader.h"
 
 int main(int argc, char *argv[]) {
@@ -39,14 +40,14 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
 
-  // findController()
-
   QQmlApplicationEngine engine;
 
   // Expose to QML
   for (const auto& pair : *g_pControllers) { // 'pair' will be a const reference to std::pair<const std::string, int>
     engine.rootContext()->setContextProperty(QString::fromStdString(pair.first), pair.second);
   }
+
+  auto *p = findController<CanvasController>();
 
   if (argc > 1) {
     QString sFilePath(argv[1]);
