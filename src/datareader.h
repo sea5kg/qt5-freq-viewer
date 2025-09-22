@@ -22,39 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <QGuiApplication>
-#include <QApplication>
-#include <QQuickView>
-#include <QtQml>
-#include <QUrl>
-#include <iostream>
+#pragma once
 
-#include "mytextcontroller.h"
-#include "all_controllers.h"
+#include <QString>
+#include <vector>
 
-int main(int argc, char *argv[]) {
-  // QApplication app(argc, argv);
-  QApplication app(argc, argv);
+class DataReader {
+private:
+  QString header1;
+  QString header2;
+  std::vector<double> m_vFreq;
+  std::vector<std::pair<double,double>> m_vS11;
 
-
-  // findController()
-
-  QQmlApplicationEngine engine;
-
-  // Expose to QML
-  for (const auto& pair : *g_pControllers) { // 'pair' will be a const reference to std::pair<const std::string, int>
-    engine.rootContext()->setContextProperty(QString::fromStdString(pair.first), pair.second);
-  }
-
-  // view.setSource(QUrl::fromLocalFile("qml/main.qml"));
-  const QUrl url(QStringLiteral("qml/main.qml")); // Assuming main.qml is in a Qt resource file
-
-  QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                   &app, [url](QObject *obj, const QUrl &objUrl) {
-      if (!obj && url == objUrl)
-          QCoreApplication::exit(-1);
-  }, Qt::QueuedConnection);
-  engine.load(url);
-
-  return app.exec();
-}
+public:
+  bool tryRead(const QString &sFilePath, QString &sErrorMessage);
+};

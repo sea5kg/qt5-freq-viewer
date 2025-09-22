@@ -26,10 +26,10 @@ SOFTWARE.
 
 #include <QApplication>
 #include <QFileDialog>
-#include <QTextStream>
+#include <QMessageBox>
 #include <iostream>
 #include "all_controllers.h"
-
+#include "datareader.h"
 
 REGISTRY_SINGLE_CONTROLLER(MenuController)
 
@@ -44,37 +44,19 @@ void MenuController::performActionOpen() {
         tr("Open File With Frequirencies"), ".", tr("All Files (*.*)"));
     std::cout << "Selected file: " << filePath.toStdString() << std::endl;
 
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        std::cout << "Error opening file:" << file.errorString().toStdString() << std::endl;
+    DataReader reader;
+    QString errorMessage;
+    if (!reader.tryRead(filePath, errorMessage)) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical); // Sets the error icon
+        // msgBox.setText("Error on read file");
+        msgBox.setInformativeText(errorMessage);
+        msgBox.setWindowTitle("Error");
+        msgBox.setStandardButtons(QMessageBox::Ok); // Adds an "OK" button
+        msgBox.exec(); // Shows the 
+
         return;
     }
-
-    QTextStream in(&file);
-    QString line;
-
-    while (!in.atEnd()) {
-        line = in.readLine(); // Read one line at a time
-        line = line.trimmed();
-        if (line == "") {
-            continue;
-        }
-        if (line.startsWith("#")) {
-            std::cout << "title: " << line.toStdString() << std::endl;
-        }
-        else if (line.startsWith("!")) {
-            std::cout << "title2: " << line.toStdString() << std::endl;
-        } else {
-            QString str = "3.00000000000E+05";
-            double value = str.toDouble();
-
-            std::cout << value << "    " << line.toStdString() << std::endl;
-        }
-        // qDebug() << line;     // Process or display the line
-    }
-
-    file.close(); // Close the file when done
-
 }
 
 void MenuController::performActionClose() {

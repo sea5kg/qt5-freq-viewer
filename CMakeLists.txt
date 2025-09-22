@@ -20,6 +20,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Qml Gui Quick QuickControl
 
 set(PROJECT_SOURCES
         "./src/main.cpp"
+        "./src/datareader.cpp"
         "./src/controllers/all_controllers.cpp"
         "./src/controllers/canvascontroller.cpp"
         "./src/controllers/menucontroller.cpp"
