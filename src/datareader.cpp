@@ -98,3 +98,7 @@ bool DataReader::tryRead(const QString &sFilePath) {
 QString DataReader::getErrorMessage() {
   return m_sErrorMessage;
 }
+
+QString DataReader::getHeader1() {
+  return m_sHeader1;
+}

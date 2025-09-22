@@ -32,10 +32,40 @@ SOFTWARE.
 REGISTRY_SINGLE_CONTROLLER(CanvasController)
 
 CanvasController::CanvasController(QObject *parent)
-    : QObject(parent) {
+    : QObject(parent), m_bRequestRepaint(false) {
+}
+
+QString CanvasController::getHeader1() const {
+    return m_sHeader1;
+}
+
+void CanvasController::setHeader1(const QString &header1) {
+    if (m_sHeader1 == header1)
+        return;
+    m_sHeader1 = header1;
+    emit header1Changed();
+}
+
+QString CanvasController::getHeader2() const {
+    return m_sHeader2;
+}
+
+void CanvasController::setHeader2(const QString &header2) {
+    if (m_sHeader2 == header2)
+        return;
+    m_sHeader2 = header2;
+    emit header2Changed();
 }
 
 void CanvasController::onPaint() {
     std::cout << "CanvasController::onPaint()" << std::endl;
     // TODO
+}
+
+bool CanvasController::hasRequestRepaint() {
+    return m_bRequestRepaint;
+}
+
+void CanvasController::setRequestRepaint(bool bValue) {
+    m_bRequestRepaint = bValue;
 }

@@ -29,9 +29,31 @@ SOFTWARE.
 class CanvasController : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString header1 READ getHeader1 WRITE setHeader1 NOTIFY header1Changed)
+    Q_PROPERTY(QString header2 READ getHeader2 WRITE setHeader2 NOTIFY header2Changed)
+    Q_PROPERTY(bool hasRequestRepaint READ hasRequestRepaint WRITE setRequestRepaint)
+
 public:
     explicit CanvasController(QObject *parent = nullptr);
 
+    QString getHeader1() const;
+    void setHeader1(const QString &header1);
+
+    QString getHeader2() const;
+    void setHeader2(const QString &header2);
+
+    bool hasRequestRepaint();
+    void setRequestRepaint(bool bValue);
+
     Q_INVOKABLE void onPaint();
+
+signals:
+    void header1Changed();
+    void header2Changed();
+
+private:
+    QString m_sHeader1;
+    QString m_sHeader2;
+    bool m_bRequestRepaint;
 };
 

@@ -39,4 +39,6 @@ private:
 public:
   bool tryRead(const QString &sFilePath);
   QString getErrorMessage();
+
+  QString getHeader1();
 };

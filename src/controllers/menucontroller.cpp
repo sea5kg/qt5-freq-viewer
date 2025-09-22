@@ -29,33 +29,39 @@ SOFTWARE.
 #include <QMessageBox>
 #include <iostream>
 #include "all_controllers.h"
+#include "canvascontroller.h"
 #include "datareader.h"
 
 REGISTRY_SINGLE_CONTROLLER(MenuController)
 
 MenuController::MenuController(QObject *parent)
-    : QObject(parent) {
+  : QObject(parent) {
 
 }
 
 void MenuController::performActionOpen() {
-    std::cout << "Action performed from C++: performActionOpen" << std::endl;
-    QString filePath = QFileDialog::getOpenFileName(nullptr,
-        tr("Open File With Frequirencies"), ".", tr("All Files (*.*)"));
-    std::cout << "Selected file: " << filePath.toStdString() << std::endl;
+  std::cout << "Action performed from C++: performActionOpen" << std::endl;
+  QString filePath = QFileDialog::getOpenFileName(nullptr,
+    tr("Open File With Frequirencies"), ".", tr("All Files (*.*)"));
+  std::cout << "Selected file: " << filePath.toStdString() << std::endl;
 
-    DataReader reader;
-    if (!reader.tryRead(filePath)) {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setInformativeText(reader.getErrorMessage());
-        msgBox.setWindowTitle("Error");
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
-        return;
-    }
+  DataReader reader;
+  if (!reader.tryRead(filePath)) {
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setInformativeText(reader.getErrorMessage());
+    msgBox.setWindowTitle("Error");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+    return;
+  }
+
+  auto *canvas = findController<CanvasController>();
+  canvas->setHeader1(reader.getHeader1());
+
+  canvas->setRequestRepaint(true);
 }
 
 void MenuController::performActionClose() {
-    QCoreApplication::exit(-1);
+  QCoreApplication::exit(-1);
 }
