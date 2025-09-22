@@ -45,16 +45,13 @@ void MenuController::performActionOpen() {
     std::cout << "Selected file: " << filePath.toStdString() << std::endl;
 
     DataReader reader;
-    QString errorMessage;
-    if (!reader.tryRead(filePath, errorMessage)) {
+    if (!reader.tryRead(filePath)) {
         QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical); // Sets the error icon
-        // msgBox.setText("Error on read file");
-        msgBox.setInformativeText(errorMessage);
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setInformativeText(reader.getErrorMessage());
         msgBox.setWindowTitle("Error");
-        msgBox.setStandardButtons(QMessageBox::Ok); // Adds an "OK" button
-        msgBox.exec(); // Shows the 
-
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
         return;
     }
 }

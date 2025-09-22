@@ -28,67 +28,73 @@ SOFTWARE.
 #include <QTextStream>
 #include <iostream>
 
-bool DataReader::tryRead(const QString &sFilePath, QString &sErrorMessage) {
-    header1 = "";
-    header2 = "";
-    m_vFreq.clear();
-    m_vS11.clear();
+bool DataReader::tryRead(const QString &sFilePath) {
+  m_sFilePath = sFilePath;
+  m_sHeader1 = "";
+  m_sHeader2 = "";
+  m_sErrorMessage = "";
+  m_vFreq.clear();
+  m_vS11.clear();
 
-    QFile file(sFilePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        sErrorMessage = "Error opening file:" + file.errorString();
+  QFile file(m_sFilePath);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    m_sErrorMessage = "Error opening file: '" + sFilePath + "'\nError: " + file.errorString();
+    return false;
+  }
+
+  QTextStream in(&file);
+  QString sLine;
+
+  int nLineNumber = 0;
+  while (!in.atEnd()) {
+    sLine = in.readLine(); // Read one line at a time
+    nLineNumber++;
+    sLine = sLine.trimmed();
+    if (sLine == "") {
+      continue;
+    }
+    if (sLine.startsWith("#")) {
+      m_sHeader1 += sLine + "\n";
+      // std::cout << "title: " << line.toStdString() << std::endl;
+    } else if (sLine.startsWith("!")) {
+      m_sHeader2 += sLine + "\n";
+      // std::cout << "title2: " << line.toStdString() << std::endl;
+    } else if (sLine[0] >= '0' && sLine[0] <= '9') {
+      QStringList listNumbers = sLine.split(" ");
+      if (listNumbers.size() != 3) {
+        m_sErrorMessage = "Expexted 3 number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
         return false;
+      }
+      // TODO reserve lines
+      bool ok;
+      m_vFreq.push_back(listNumbers[0].toDouble(&ok));
+      if (!ok) {
+        m_sErrorMessage = "Expexted 0 item as number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
+        return false;
+      }
+
+      double nS11Real = listNumbers[1].toDouble(&ok);
+      if (!ok) {
+        m_sErrorMessage = "Expexted 1 item as number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
+        return false;
+      }
+
+      double nS11Imag = listNumbers[2].toDouble(&ok);
+      if (!ok) {
+        m_sErrorMessage = "Expexted 2 item as number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
+        return false;
+      }
+      m_vS11.push_back(std::pair<double,double>(nS11Real, nS11Imag));
+      std::cout << "    " << sLine.toStdString() << std::endl;
+    } else {
+      m_sErrorMessage = "Unexpected start character at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
+      return false;
     }
+  }
+  // file.close();
+  return true;
+}
 
-    QTextStream in(&file);
-    QString sLine;
-
-    int nLineNumber = 0;
-    while (!in.atEnd()) {
-        sLine = in.readLine(); // Read one line at a time
-        nLineNumber++;
-        sLine = sLine.trimmed();
-        if (sLine == "") {
-            continue;
-        }
-        if (sLine.startsWith("#")) {
-            header1 += sLine + "\n";
-            // std::cout << "title: " << line.toStdString() << std::endl;
-        } else if (sLine.startsWith("!")) {
-            header2 += sLine + "\n";
-            // std::cout << "title2: " << line.toStdString() << std::endl;
-        } else if (sLine[0] >= '0' && sLine[0] <= '9') {
-            QStringList listNumbers = sLine.split(" ");
-            if (listNumbers.size() != 3) {
-                sErrorMessage = "Expexted 3 number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
-                return false;
-            }
-            // TODO reserve lines
-            bool ok;
-            m_vFreq.push_back(listNumbers[0].toDouble(&ok));
-            if (!ok) {
-                sErrorMessage = "Expexted 0 item as number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
-                return false;
-            }
-
-            double nS11Real = listNumbers[1].toDouble(&ok);
-            if (!ok) {
-                sErrorMessage = "Expexted 1 item as number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
-                return false;
-            }
-
-            double nS11Imag = listNumbers[2].toDouble(&ok);
-            if (!ok) {
-                sErrorMessage = "Expexted 2 item as number at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
-                return false;
-            }
-            m_vS11.push_back(std::pair<double,double>(nS11Real, nS11Imag));
-            std::cout << "    " << sLine.toStdString() << std::endl;
-        } else {
-            sErrorMessage = "Unexpected start character at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
-            return false;
-        }
-    }
-    // file.close();
-    return true;
+QString DataReader::getErrorMessage() {
+  return m_sErrorMessage;
 }

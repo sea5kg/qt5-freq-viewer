@@ -26,11 +26,13 @@ SOFTWARE.
 #include <QApplication>
 #include <QQuickView>
 #include <QtQml>
+#include <QMessageBox>
 #include <QUrl>
 #include <iostream>
 
 #include "mytextcontroller.h"
 #include "all_controllers.h"
+#include "datareader.h"
 
 int main(int argc, char *argv[]) {
   // QApplication app(argc, argv);
@@ -45,6 +47,22 @@ int main(int argc, char *argv[]) {
   for (const auto& pair : *g_pControllers) { // 'pair' will be a const reference to std::pair<const std::string, int>
     engine.rootContext()->setContextProperty(QString::fromStdString(pair.first), pair.second);
   }
+
+  if (argc > 1) {
+    QString sFilePath(argv[1]);
+    std::cout << sFilePath.toStdString() << std::endl;
+    DataReader reader;
+    if (!reader.tryRead(sFilePath)) {
+      QMessageBox msgBox;
+      msgBox.setIcon(QMessageBox::Critical);
+      msgBox.setInformativeText(reader.getErrorMessage());
+      msgBox.setWindowTitle("Error");
+      msgBox.setStandardButtons(QMessageBox::Ok);
+      msgBox.exec();
+      return -1;
+    }
+  }
+
 
   // view.setSource(QUrl::fromLocalFile("qml/main.qml"));
   const QUrl url(QStringLiteral("qml/main.qml")); // Assuming main.qml is in a Qt resource file

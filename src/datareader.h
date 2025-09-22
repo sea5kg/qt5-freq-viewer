@@ -29,11 +29,14 @@ SOFTWARE.
 
 class DataReader {
 private:
-  QString header1;
-  QString header2;
+  QString m_sFilePath;
+  QString m_sErrorMessage;
+  QString m_sHeader1;
+  QString m_sHeader2;
   std::vector<double> m_vFreq;
   std::vector<std::pair<double,double>> m_vS11;
 
 public:
-  bool tryRead(const QString &sFilePath, QString &sErrorMessage);
+  bool tryRead(const QString &sFilePath);
+  QString getErrorMessage();
 };
