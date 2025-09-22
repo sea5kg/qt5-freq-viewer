@@ -8,16 +8,10 @@ ApplicationWindow {
     visible: true
     title: qsTr("Qt5 Freq Viewer")
 
-    FontLoader {
-        id: customFont
-        source: "qrc:/fonts/CruNattapong-XyOd.ttf"
-        // onStatusChanged: {
-        //     if (customFont.status === FontLoader.Ready) {
-        //         console.log("Custom font loaded: " + customFont.name);
-        //         // window1.font = customFont
-        //     }
-        // }
-    }
+    // FontLoader {
+    //     id: customFont
+    //     source: "qrc:/src/fonts/CruNattapong-XyOd.ttf"
+    // }
 
     // color: "lightgray"
 
@@ -78,7 +72,9 @@ ApplicationWindow {
             ctx.lineTo(paddingLeft, paddingTop);
             ctx.stroke();
 
-            ctx.font = "bold 24px \"" + customFont.name + "\""
+            // ctx.font = "bold 24px \"" + customFont + "\""
+            ctx.font = "bold 24px \"AAA-Watin New\""
+            console.log(ctx.font)
             ctx.font.pointSize = 24
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
