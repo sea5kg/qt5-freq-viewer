@@ -40,5 +40,8 @@ public:
   bool tryRead(const QString &sFilePath);
   QString getErrorMessage();
 
-  QString getHeader1();
+  const QString &getHeader1() const;
+  const QString &getHeader2() const;
+  const std::vector<double> &getFreq() const;
+  const std::vector<std::pair<double,double>> &getS11() const;
 };

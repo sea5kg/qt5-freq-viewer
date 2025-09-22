@@ -57,8 +57,7 @@ void MenuController::performActionOpen() {
   }
 
   auto *canvas = findController<CanvasController>();
-  canvas->setHeader1(reader.getHeader1());
-
+  canvas->applyFromReader(reader);
   canvas->setRequestRepaint(true);
 }
 

@@ -85,7 +85,7 @@ bool DataReader::tryRead(const QString &sFilePath) {
         return false;
       }
       m_vS11.push_back(std::pair<double,double>(nS11Real, nS11Imag));
-      std::cout << "    " << sLine.toStdString() << std::endl;
+      // std::cout << "    " << sLine.toStdString() << std::endl;
     } else {
       m_sErrorMessage = "Unexpected start character at line " + QString::number(nLineNumber) + ": '" + sLine + "'";
       return false;
@@ -99,6 +99,18 @@ QString DataReader::getErrorMessage() {
   return m_sErrorMessage;
 }
 
-QString DataReader::getHeader1() {
+const QString &DataReader::getHeader1() const {
   return m_sHeader1;
+}
+
+const QString &DataReader::getHeader2() const {
+  return m_sHeader2;
+}
+
+const std::vector<double> &DataReader::getFreq() const {
+  return m_vFreq;
+}
+
+const std::vector<std::pair<double,double>> &DataReader::getS11() const {
+  return m_vS11;
 }

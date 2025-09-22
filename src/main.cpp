@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
       return -1;
     }
     auto *canvas = findController<CanvasController>();
-    canvas->setHeader1(reader.getHeader1());
+    canvas->applyFromReader(reader);
   }
 
   // view.setSource(QUrl::fromLocalFile("qml/main.qml"));
