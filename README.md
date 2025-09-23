@@ -32,22 +32,19 @@ $ docker run -it --rm -v $(pwd):/opt/src "sea5kg/qt5-freq-viewer:build-env" bash
 # ./build_simple.sh
 ```
 
-## Preapre deploy
+## Preapre deb package
+
+Required buidled app
 
 ```sh
-$ sudo apt install patchelf zip
-$ git clone https://github.com/probonopd/linuxdeployqt
-$ cd linuxdeployqt
-$ qmake
-$ make
-$ cd bin
-$ ./linuxdeployqt ../../qt5-freq-viewer -qmldir=../../src/qml/ -always-overwrite
+$ sudo apt install build-essential binutils lintian debhelper dh-make devscripts
+$ ./create_deb.sh
 ```
-*note: linuxdeployqt can be freezed. So... just Ctrl+С and continue*
-```
-$ rm -rf Qt5FreqViewer.zip
-$ zip Qt5FreqViewer.zip -r qt5-freq-viewer AppRun qml/ lib/ doc/
 
+Install to target machine
+```sh
+$ sudo dpkg -i qt5-freq-viewer_0.2-1_amd64.deb
+$ sudo apt --fix-broken install
 ```
 
 ## Run from command line:
@@ -60,4 +57,3 @@ $ ./qt5-freq-viewer testdata/test1.txt
 ## References
 
 https://github.com/tlanc007/qt5-qml-cpp-cmake-helloworld/tree/master
-https://github.com/probonopd/linuxdeployqt
