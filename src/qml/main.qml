@@ -40,15 +40,25 @@ ApplicationWindow {
         // font.pointSize: 24
 
         Timer {
-            interval: 500
+            interval: 40
             running: true
             repeat: true
             onTriggered: {
+                if (CanvasController.isMouseDown) {
+                    canva1.requestPaint();
+                    return;
+                }
                 if (CanvasController.hasRequestRepaint) {
                     CanvasController.hasRequestRepaint = false;
                     canva1.requestPaint();
+                    return;
                 }
             }
+        }
+        property var zooming : {
+            'tmp_freq_start': 0,
+            'tmp_freq_end': 0,
+            'freq': [],
         }
 
         onPaint: {
@@ -88,6 +98,25 @@ ApplicationWindow {
 
             var x_vals = CanvasController.getValuesX(canva1.width, canva1.height);
             var y_vals = CanvasController.getValuesY(canva1.width, canva1.height);
+
+            if (canva1.zooming['freq'].length > 0) {
+                // console.log("zomming actived")
+                var freq_last = canva1.zooming['freq'].length - 1;
+                var freq_last = canva1.zooming['freq'][freq_last]
+                var freq_start = freq_last['freq_start'];
+                var freq_end = freq_last['freq_end'];
+                var x_vals_new = []
+                var y_vals_new = []
+                for (var i = 0; i < x_vals.length; i++) {
+                    if (x_vals[i] >= freq_start && x_vals[i] <= freq_end) {
+                        x_vals_new.push(x_vals[i]);
+                        y_vals_new.push(y_vals[i]);
+                    }
+                }
+                x_vals = x_vals_new;
+                y_vals = y_vals_new;
+            }
+
             if (x_vals.length == 0) {
                 x_vals = [0];
             }
@@ -130,6 +159,27 @@ ApplicationWindow {
             var x_k = width_dia / x_length;
             var y_k = height_dia / y_length;
 
+            if (CanvasController.isMouseDown) {
+                ctx.fillStyle = "#87CEFA";
+                var x1 = mousearea1.mouseX;
+                var x2 = CanvasController.getMouseDownX();
+                if (x1 > x2) {
+                    var x3 = x1;
+                    x1 = x2;
+                    x2 = x3;
+                }
+                if (x1 < paddingLeft) {
+                    x1 = paddingLeft;
+                }
+                if (x2 > canva1.width - paddingRight) {
+                    x2 = canva1.width - paddingRight;
+                }
+                ctx.fillRect(x1, paddingTop, x2-x1, canva1.height - paddingTop - paddingBottom);
+                canva1.zooming['tmp_freq_start'] = x1 / x_k;
+                canva1.zooming['tmp_freq_end'] = x2 / x_k;
+                // console.log("Freq start: ", JSON.stringify(canva1.zooming))
+            }
+
             ctx.beginPath()
             var h = canva1.height - paddingBottom;
             for (var i = 0; i < x_vals.length; i++) {
@@ -143,6 +193,39 @@ ApplicationWindow {
                 }
             }
             ctx.stroke();
+        }
+
+        MouseArea {
+            id: mousearea1
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            onPressed: {
+                if (mouse.button == Qt.LeftButton) {
+                    CanvasController.isMouseDown = true;
+                    // console.log("Mouse down at:", mouse.x, mouse.y);
+                    CanvasController.setMouseDownXY(mouse.x, mouse.y);
+                }
+                if (mouse.button == Qt.RightButton) {
+                    CanvasController.isMouseDown = false;
+                    CanvasController.hasRequestRepaint = true;
+                    if (canva1.zooming['freq'].length > 0) {
+                        canva1.zooming['freq'].pop();
+                    }
+                    // console.log("TODO reset zooming")
+                }
+            }
+            onReleased: {
+                if (mouse.button == Qt.LeftButton && CanvasController.isMouseDown) {
+                    CanvasController.isMouseDown = false;
+                    CanvasController.hasRequestRepaint = true;
+                    if (CanvasController.getMouseDownX() != mouse.x) {
+                        canva1.zooming['freq'].push({
+                            'freq_start': canva1.zooming['tmp_freq_start'],
+                            'freq_end': canva1.zooming['tmp_freq_end']
+                        })
+                    }
+                }
+            }
         }
     }
 

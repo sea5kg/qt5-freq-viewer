@@ -35,7 +35,7 @@ SOFTWARE.
 REGISTRY_SINGLE_CONTROLLER(CanvasController)
 
 CanvasController::CanvasController(QObject *parent)
-    : QObject(parent), m_bRequestRepaint(false) {
+    : QObject(parent), m_bRequestRepaint(false), m_bMouseDown(false) {
 }
 
 void CanvasController::applyFromReader(const DataReader &reader) {
@@ -103,4 +103,38 @@ bool CanvasController::hasRequestRepaint() {
 
 void CanvasController::setRequestRepaint(bool bValue) {
     m_bRequestRepaint = bValue;
+}
+
+bool CanvasController::getMouseDown() const {
+    return m_bMouseDown;
+}
+
+void CanvasController::setMouseDown(bool bValue) {
+    m_bMouseDown = bValue;
+}
+
+void CanvasController::setMouseDownXY(int x, int y) {
+    m_nMouseDownX = x;
+    m_nMouseDownY = y;
+}
+
+int CanvasController::getMouseDownX() {
+    return m_nMouseDownX;
+}
+
+int CanvasController::getMouseDownY() {
+    return m_nMouseDownY;
+}
+
+void CanvasController::setMouseUpXY(int x, int y) {
+    m_nMouseUpX = x;
+    m_nMouseUpY = y;
+}
+
+int CanvasController::getMouseUpX() {
+    return m_nMouseUpX;
+}
+
+int CanvasController::getMouseUpY() {
+    return m_nMouseUpY;
 }

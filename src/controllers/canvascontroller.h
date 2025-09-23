@@ -35,6 +35,8 @@ class CanvasController : public QObject
     Q_PROPERTY(QString header1 READ getHeader1 WRITE setHeader1 NOTIFY header1Changed)
     Q_PROPERTY(QString header2 READ getHeader2 WRITE setHeader2 NOTIFY header2Changed)
     Q_PROPERTY(bool hasRequestRepaint READ hasRequestRepaint WRITE setRequestRepaint)
+    Q_PROPERTY(bool isMouseDown READ getMouseDown WRITE setMouseDown)
+
     // Q_PROPERTY(QVariantList valuesX READ getValuesX)
 
 public:
@@ -51,10 +53,17 @@ public:
     bool hasRequestRepaint();
     void setRequestRepaint(bool bValue);
 
-    // getValuesX
+    bool getMouseDown() const;
+    void setMouseDown(bool bValue);
 
     Q_INVOKABLE QVariantList getValuesX(int width, int height);
     Q_INVOKABLE QVariantList getValuesY(int width, int height);
+    Q_INVOKABLE void setMouseDownXY(int x, int y);
+    Q_INVOKABLE int getMouseDownX();
+    Q_INVOKABLE int getMouseDownY();
+    Q_INVOKABLE void setMouseUpXY(int x, int y);
+    Q_INVOKABLE int getMouseUpX();
+    Q_INVOKABLE int getMouseUpY();
 
 signals:
     void header1Changed();
@@ -64,6 +73,11 @@ private:
     QString m_sHeader1;
     QString m_sHeader2;
     bool m_bRequestRepaint;
+    bool m_bMouseDown;
+    int m_nMouseDownX;
+    int m_nMouseDownY;
+    int m_nMouseUpX;
+    int m_nMouseUpY;
 
     std::vector<double> m_vFreq;
     QVariantList m_vlFreq;
