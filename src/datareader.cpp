@@ -27,8 +27,12 @@ SOFTWARE.
 #include <QFile>
 #include <QTextStream>
 #include <iostream>
+#include "timeprofiler.h"
+
 
 bool DataReader::tryRead(const QString &sFilePath) {
+
+  TimeProfiler tp("DataReader::tryRead");
   m_sFilePath = sFilePath;
   m_sHeader1 = "";
   m_sHeader2 = "";

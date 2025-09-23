@@ -24,6 +24,7 @@ set(PROJECT_SOURCES
         "./src/controllers/all_controllers.cpp"
         "./src/controllers/canvascontroller.cpp"
         "./src/controllers/menucontroller.cpp"
+        "./src/utils/timeprofiler.cpp"
         "./src/qt5-freq-viewer.qrc"
 )
 
@@ -40,6 +41,7 @@ set(PROJECT_SOURCES
 
 include_directories(
     "./src"
+    "./src/utils"
     "./src/controllers"
 )
 
