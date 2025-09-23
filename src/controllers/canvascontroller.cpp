@@ -28,6 +28,7 @@ SOFTWARE.
 #include <QFileDialog>
 #include <iostream>
 #include <cmath>
+#include "timeprofiler.h"
 
 #include "all_controllers.h"
 
@@ -38,6 +39,9 @@ CanvasController::CanvasController(QObject *parent)
 }
 
 void CanvasController::applyFromReader(const DataReader &reader) {
+
+    // TimeProfiler tp("CanvasController::applyFromReader");
+
     setHeader1(reader.getHeader1());
     setHeader2(reader.getHeader2());
 
@@ -86,14 +90,10 @@ void CanvasController::setHeader2(const QString &header2) {
 }
 
 QVariantList CanvasController::getValuesX(int width, int height) {
-    // TODO optimization for big lengths
-    // std::cout << "getValuesX " << width << " " << height << std::endl;
     return m_vlFreq;
 }
 
 QVariantList CanvasController::getValuesY(int width, int height) {
-    // TODO optimization for big lengths
-    // std::cout << "getValuesX " << width << " " << height << std::endl;
     return m_vlLogMag;
 }
 
@@ -104,5 +104,3 @@ bool CanvasController::hasRequestRepaint() {
 void CanvasController::setRequestRepaint(bool bValue) {
     m_bRequestRepaint = bValue;
 }
-
-// QArray<double> get

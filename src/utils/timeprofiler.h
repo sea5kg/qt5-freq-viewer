@@ -25,6 +25,7 @@ SOFTWARE.
 #pragma once
 
 #include <string>
+#include <QDateTime>
 #include <QElapsedTimer>
 
 class TimeProfiler {
@@ -33,5 +34,6 @@ public:
   ~TimeProfiler();
 private:
   QElapsedTimer m_timer;
+  QDateTime m_startDateTime;
   std::string m_what;
 };

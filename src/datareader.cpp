@@ -29,10 +29,9 @@ SOFTWARE.
 #include <iostream>
 #include "timeprofiler.h"
 
-
 bool DataReader::tryRead(const QString &sFilePath) {
 
-  TimeProfiler tp("DataReader::tryRead");
+  // TimeProfiler tp("DataReader::tryRead");
   m_sFilePath = sFilePath;
   m_sHeader1 = "";
   m_sHeader2 = "";
@@ -41,6 +40,7 @@ bool DataReader::tryRead(const QString &sFilePath) {
   m_vS11.clear();
 
   QFile file(m_sFilePath);
+
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     m_sErrorMessage = "Error opening file: '" + sFilePath + "'\nError: " + file.errorString();
     return false;
@@ -98,6 +98,7 @@ bool DataReader::tryRead(const QString &sFilePath) {
   // file.close();
   return true;
 }
+
 
 QString DataReader::getErrorMessage() {
   return m_sErrorMessage;

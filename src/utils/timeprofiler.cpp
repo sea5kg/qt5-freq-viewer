@@ -27,9 +27,11 @@ SOFTWARE.
 
 TimeProfiler::TimeProfiler(const std::string &what) : m_what(what) {
     m_timer.start();
+    m_startDateTime = QDateTime::currentDateTime();
 }
 
 TimeProfiler::~TimeProfiler() {
     qint64 elapsedMilliseconds = m_timer.elapsed();
-    std::cout << "[" << m_what << "] Elapsed time: " << elapsedMilliseconds << " milliseconds" << std::endl;
+    qint64 msecsDiff = m_startDateTime.msecsTo(QDateTime::currentDateTime());
+    std::cout << "[" << m_what << "] Elapsed time: " << elapsedMilliseconds << " ms or second meansuring " << msecsDiff << " ms" << std::endl;
 }
