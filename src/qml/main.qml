@@ -78,13 +78,15 @@ ApplicationWindow {
             var paddingBottom = 40;
             var width_dia = canva1.width - paddingLeft - paddingRight;
             var height_dia = canva1.height - paddingTop - paddingBottom;
+            var min_x_dia = paddingLeft;
+            var max_x_dia = width_dia + paddingLeft;
 
             ctx.beginPath()
-            ctx.moveTo(paddingLeft, paddingTop);
-            ctx.lineTo(paddingLeft, canva1.height - paddingBottom);
-            ctx.lineTo(canva1.width - paddingRight, canva1.height - paddingBottom);
-            ctx.lineTo(canva1.width - paddingRight, paddingTop);
-            ctx.lineTo(paddingLeft, paddingTop);
+            ctx.moveTo(min_x_dia, paddingTop);
+            ctx.lineTo(min_x_dia, canva1.height - paddingBottom);
+            ctx.lineTo(max_x_dia, canva1.height - paddingBottom);
+            ctx.lineTo(max_x_dia, paddingTop);
+            ctx.lineTo(min_x_dia, paddingTop);
             ctx.stroke();
 
             // ctx.font = "bold 24px \"" + customFont + "\""
@@ -168,15 +170,16 @@ ApplicationWindow {
                     x1 = x2;
                     x2 = x3;
                 }
-                if (x1 < paddingLeft) {
-                    x1 = paddingLeft;
+                if (x1 <= min_x_dia) {
+                    x1 = min_x_dia;
                 }
-                if (x2 > canva1.width - paddingRight) {
-                    x2 = canva1.width - paddingRight;
+                if (x2 >= max_x_dia) {
+                    x2 = max_x_dia;
                 }
                 ctx.fillRect(x1, paddingTop, x2-x1, canva1.height - paddingTop - paddingBottom);
-                canva1.zooming['tmp_freq_start'] = x1 / x_k;
-                canva1.zooming['tmp_freq_end'] = x2 / x_k;
+                canva1.zooming['tmp_freq_start'] = x_min + (x1 - paddingLeft) / x_k;
+                canva1.zooming['tmp_freq_end'] = x_min + (x2 - paddingLeft) / x_k;
+                // console.log("Freq start: ", x1, x2)
                 // console.log("Freq start: ", JSON.stringify(canva1.zooming))
             }
 
